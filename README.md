@@ -1,3 +1,7 @@
+## Превью
+
+![Превью дашборда](dashboard-preview.png)
+
 # Moscow Marathon 2026 Dashboard
 
 Интерактивный дашборд результатов **SberPrime Moscow Marathon 2026**.
@@ -81,32 +85,3 @@ mm2026/
 ```text
 Russian Federation, M34
 ```
-
-## Добавление скриншота в README
-
-Чтобы добавить снимок дашборда в репозиторий:
-
-1. Откройте `http://localhost:8000`.
-2. Сделайте снимок экрана и сохраните его в папку проекта под именем:
-
-   ```text
-   dashboard-preview.png
-   ```
-
-3. Добавьте в конец этого файла:
-
-   ```markdown
-   ## Превью
-
-   ![Превью дашборда](dashboard-preview.png)
-   ```
-
-4. Отправьте файл на GitHub:
-
-   ```powershell
-   git add README.md dashboard-preview.png
-   git commit -m "Add dashboard README and preview"
-   git push
-   ```
-
-После этого изображение будет отображаться прямо на главной странице репозитория GitHub.
