@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Результаты Московского марафона</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main id="app" class="dashboard">
+      <header class="dashboard-header">
+        <div>
+          <p class="eyebrow">SberPrime Moscow Marathon · 2026</p>
+          <h1>Результаты бегунов</h1>
+          <p class="subtitle">Первая страница результатов, по 100 участников</p>
+        </div>
+        <div class="summary-card">
+          <span class="summary-label">Всего участников</span>
+          <strong>{{ totalCount.toLocaleString('ru-RU') }}</strong>
+        </div>
+      </header>
+
+      <section v-if="!loading && !error" class="analytics-dashboard" aria-label="Аналитика результатов">
+        <div class="dashboard-grid dashboard-grid-top">
+          <article class="stat-block">
+            <div class="stat-number">{{ totalCount.toLocaleString('ru-RU') }}</div>
+            <div class="stat-caption">участников</div>
+            <div class="gender-summary">
+              <span class="gender-chip male">{{ genderCounts.male.toLocaleString('ru-RU') }} мужчин</span>
+              <span class="gender-chip female">{{ genderCounts.female.toLocaleString('ru-RU') }} женщин</span>
+            </div>
+            <div class="stat-note">Возраст: {{ ageRange }}</div>
+          </article>
+
+          <article class="chart-block age-block">
+            <h2>По возрасту и полу</h2>
+            <div ref="ageChart" class="chart age-chart"></div>
+          </article>
+
+          <article class="chart-block countries-block">
+            <h2>По странам</h2>
+            <div ref="countryChart" class="chart country-chart"></div>
+          </article>
+
+          <article class="chart-block leaders-block">
+            <h2>Призёры</h2>
+            <div class="leaders-list">
+              <div v-for="runner in podium" :key="runner.result_url" class="leader-row" :class="runner.gender">
+                <span class="leader-place">{{ runner.podiumPlace }}</span>
+                <span class="leader-name">{{ runner.name }}</span>
+                <strong>{{ runner.finish_time }}</strong>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <article class="chart-block finish-block">
+          <h2>Распределение на финише</h2>
+          <div ref="finishChart" class="chart finish-chart"></div>
+        </article>
+      </section>
+
+      <section class="table-card" aria-label="Таблица результатов">
+        <div v-if="loading" class="state-message">Загрузка данных…</div>
+        <div v-else-if="error" class="state-message error">{{ error }}</div>
+        <template v-else>
+          <div class="table-meta">
+            <span>Показаны записи {{ firstShown }}–{{ lastShown }}</span>
+            <span class="meta-muted">Размер страницы: 100</span>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Место</th>
+                  <th>Бегун</th>
+                  <th>Класс</th>
+                  <th>Страна / категория</th>
+                  <th>Номер</th>
+                  <th>Темп</th>
+                  <th>Финиш</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="runner in visibleRunners" :key="runner.result_url">
+                  <td class="place">{{ runner.place }}</td>
+                  <td class="runner-name">{{ runner.name }}</td>
+                  <td>
+                    <span class="class-badge" :class="runner.class">{{ runner.class }}</span>
+                  </td>
+                  <td>{{ runner.country }}</td>
+                  <td>{{ runner.bib_number }}</td>
+                  <td>{{ runner.pace }}</td>
+                  <td class="finish-time">{{ runner.finish_time }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </template>
+      </section>
+    </main>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
